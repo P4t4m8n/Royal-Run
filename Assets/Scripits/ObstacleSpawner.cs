@@ -7,7 +7,6 @@ public class ObstacleSpawner : MonoBehaviour
     [SerializeField] private GameObject[] obstaclePrefabs;
     [SerializeField] private Transform obstacleParent;
     [SerializeField] private float spawnInterval = 1f;
-    [SerializeField] private float spawnHeight = 0f;
     [SerializeField] private float spawnWidth = 4f;
     void Start()
     {
