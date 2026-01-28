@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
@@ -7,7 +8,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private int startingChunksAmount = 12;
     [SerializeField] private float chunkLength = 10f;
     [SerializeField] private float moveSpeed = 8f;
-    private GameObject[] chunks = new GameObject[12];
+    private List<GameObject> chunks = new();
 
     private void Start()
     {
@@ -19,27 +20,47 @@ public class LevelGenerator : MonoBehaviour
         MoveChunks();
     }
 
+
     private void SpawnChunks()
     {
         for (int i = 0; i < startingChunksAmount; i++)
         {
-            Vector3 position = CalculateChunkPosition(i);
-            chunks[i] = Instantiate(chunkPrefabs, position, Quaternion.identity, chunkParent);
+            SpawnChunkSingle();
         }
     }
 
-    private Vector3 CalculateChunkPosition(int index)
+    private void SpawnChunkSingle()
     {
-        float zPosition = index * chunkLength + transform.position.z;
+        Vector3 position = CalculateChunkPosition();
+        chunks.Add(Instantiate(chunkPrefabs, position, Quaternion.identity, chunkParent));
+    }
+
+    private Vector3 CalculateChunkPosition()
+    {
+        float zPosition = chunks.Count == 0 ?
+                          transform.position.z :
+                          chunks[^1].transform.position.z + chunkLength;
+
         return new Vector3(transform.position.x, transform.position.y, zPosition);
     }
 
     private void MoveChunks()
     {
         Vector3 translation = moveSpeed * Time.deltaTime * -transform.forward;
-        for (int i = 0; i < chunks.Length; i++)
+        for (int i = 0; i < chunks.Count; i++)
         {
-            chunks[i].transform.Translate(translation);
+            GameObject chunk = chunks[i];
+            chunk.transform.Translate(translation);
+
+            bool isChunkBehindPlayer = chunk.transform.position.z <= Camera.main.transform.position.z
+             - chunkLength;
+
+            if (!isChunkBehindPlayer) continue;
+
+            chunks.RemoveAt(i);
+            Destroy(chunk);
+
+            SpawnChunkSingle();
         }
 
     }
