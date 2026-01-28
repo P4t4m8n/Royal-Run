@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 518874109036434528}
-  - component: {fileID: -3404331286390331575}
   - component: {fileID: -7152832716992978628}
+  - component: {fileID: 4656575175883048557}
   m_Layer: 0
   m_Name: Apple Pickup
   m_TagString: Untagged
@@ -34,18 +34,6 @@ Transform:
   - {fileID: 2312869828914611757}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-3404331286390331575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2288094407245634839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 456149e925c13b942bcd5620324735fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &-7152832716992978628
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -69,6 +57,19 @@ CapsuleCollider:
   m_Height: 1.0549893
   m_Direction: 1
   m_Center: {x: 0.003927827, y: 0.97250533, z: 0}
+--- !u!114 &4656575175883048557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2288094407245634839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf381eb00e9b8da498071a35c8482f98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 100
 --- !u!1 &5771039443733307772
 GameObject:
   m_ObjectHideFlags: 0

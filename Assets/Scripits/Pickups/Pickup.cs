@@ -1,14 +1,24 @@
 using UnityEngine;
 
-public class Pickup : MonoBehaviour
+public abstract class Pickup : MonoBehaviour
 {
-
+    [SerializeField] float rotationSpeed = 100f;
     private const string collectibleTag = "Player";
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Apple collected!");
+
         if (other.gameObject.CompareTag(collectibleTag))
         {
-            // Debug.Log("Pickup collected by: " + other.gameObject.name);
+            OnPickup();
+            Destroy(gameObject);
         }
     }
+
+    private void Update()
+    {
+        transform.Rotate(0f, rotationSpeed * Time.deltaTime, 0f);
+    }
+
+    protected abstract void OnPickup();
 }
