@@ -25,18 +25,16 @@ public class Chunk : MonoBehaviour
 
     private void SpawnFences()
     {
-
         int fencesToSpawn = Random.Range(0, lanes.Length);
 
         for (int i = 0; i < fencesToSpawn; i++)
         {
             if (availableLanes.Count < 1) break;
-            SpawnFance();
+            SpawnFence();
         }
-
     }
 
-    private void SpawnFance()
+    private void SpawnFence()
     {
         SpawnObstacle(fencePrefab);
     }
