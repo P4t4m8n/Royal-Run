@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
-    [Header("References")]
+    [Header("Dependencies")]
     [SerializeField] private CameraController cameraController;
     [SerializeField] private GameObject chunkPrefabs;
     [SerializeField] private Transform chunkParent;
+    [SerializeField] private ScoreManager scoreManager;
 
     [Header("Level Settings")]
     [SerializeField] private int startingChunksAmount = 12;
@@ -59,7 +60,11 @@ public class LevelGenerator : MonoBehaviour
     private void SpawnChunkSingle()
     {
         Vector3 position = CalculateChunkPosition();
-        chunks.Add(Instantiate(chunkPrefabs, position, Quaternion.identity, chunkParent));
+        GameObject newChunkGO = Instantiate(chunkPrefabs, position, Quaternion.identity, chunkParent);
+        chunks.Add(newChunkGO);
+
+        Chunk newChunk = newChunkGO.GetComponent<Chunk>();
+        newChunk.Init(this, scoreManager);
     }
 
     private Vector3 CalculateChunkPosition()

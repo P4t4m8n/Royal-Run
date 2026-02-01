@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Chunk : MonoBehaviour
 {
@@ -14,15 +15,21 @@ public class Chunk : MonoBehaviour
     [SerializeField] private float coinSeperationlength = 2f;
 
     List<int> availableLanes = new() { 0, 1, 2 };
+    private LevelGenerator levelGenerator;
+    private ScoreManager scoreManager;
 
     private void Start()
     {
         SpawnFences();
         SpawnApple();
-        SpawnCoin();
+        SpawnCoins();
     }
 
-
+    public void Init(LevelGenerator levelGenerator, ScoreManager scoreManager)
+    {
+        this.levelGenerator = levelGenerator;
+        this.scoreManager = scoreManager;
+    }
     private void SpawnFences()
     {
         int fencesToSpawn = Random.Range(0, lanes.Length);
@@ -44,10 +51,11 @@ public class Chunk : MonoBehaviour
         if (Random.value > appleSpawnChance) return;
         if (availableLanes.Count < 1) return;
 
-        SpawnObstacle(applePrefab);
+        Apple newApple = SpawnObstacle(applePrefab).GetComponent<Apple>();
+        newApple.Init(levelGenerator);
     }
 
-    private void SpawnCoin()
+    private void SpawnCoins()
     {
         if (Random.value > coinSpawnChance) return;
         if (availableLanes.Count < 1) return;
@@ -62,7 +70,8 @@ public class Chunk : MonoBehaviour
         for (int i = 0; i < randomNumberOfCoins; i++)
         {
             float spawnPositionZ = topOfChunkZPosition - (i * coinSeperationlength);
-            SpawnObstacle(coinPrefab, spawnPositionZ, selectedLane);
+            Coin newCoin = SpawnObstacle(coinPrefab, spawnPositionZ, selectedLane).GetComponent<Coin>();
+            newCoin.Init(scoreManager);
         }
     }
 
@@ -76,14 +85,14 @@ public class Chunk : MonoBehaviour
         return selectedLane;
     }
 
-    private void SpawnObstacle(GameObject obstaclePrefab, float? spawnPositionZ = null, int? specificLane = null)
+    private GameObject SpawnObstacle(GameObject obstaclePrefab, float? spawnPositionZ = null, int? specificLane = null)
     {
         int selectedLane = specificLane ?? SelectLane();
 
         float zPos = spawnPositionZ ?? transform.position.z;
 
         Vector3 spawnPosition = new(lanes[selectedLane], transform.position.y, zPos);
-        Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity, this.transform);
+        return Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity, this.transform);
     }
 
 

@@ -5,12 +5,7 @@ public abstract class Pickup : MonoBehaviour
     [SerializeField] float rotationSpeed = 100f;
     private const string collectibleTag = "Player";
 
-    protected LevelGenerator levelGenerator;
-
-    private void Start()
-    {
-        levelGenerator = FindFirstObjectByType<LevelGenerator>();
-    }
+  
     private void OnTriggerEnter(Collider other)
     {
 
