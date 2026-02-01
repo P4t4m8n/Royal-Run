@@ -3,14 +3,21 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-
     [SerializeField] private GameObject[] obstaclePrefabs;
     [SerializeField] private Transform obstacleParent;
     [SerializeField] private float spawnInterval = 1f;
+    [SerializeField] private float minSpawnInterval = 0.2f;
     [SerializeField] private float spawnWidth = 4f;
     void Start()
     {
         StartCoroutine(SpawnObstacleCoroutine());
+    }
+
+    public void DecreaseObstacleSpawnInterval(float amount)
+    {
+        spawnInterval -= amount;
+        if (spawnInterval < minSpawnInterval) spawnInterval = minSpawnInterval;
+
     }
 
     private IEnumerator SpawnObstacleCoroutine()
