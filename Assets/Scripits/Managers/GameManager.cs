@@ -20,15 +20,20 @@ public class GameManager : MonoBehaviour
     {
         if (isGameOver) return;
 
-        UpdateTime();
+        DecreaseTime();
 
         if (timeLeft <= 0) GameOver();
     }
 
-    private void UpdateTime()
+    private void DecreaseTime()
     {
         timeLeft -= Time.deltaTime;
         timeText.text = timeLeft.ToString("F2");
+    }
+
+    public void IncreaseTime(float amount)
+    {
+        timeLeft += amount;
     }
 
     private void GameOver()
