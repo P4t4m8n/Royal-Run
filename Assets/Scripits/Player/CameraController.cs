@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(CinemachineCamera))]
 public class CameraController : MonoBehaviour
 {
+    [SerializeField] ParticleSystem speedupParticalSystem;
     [SerializeField] float zoomDuration = 1f;
     [SerializeField] float zoomSpeedModifier = 5f;
     [SerializeField] float minFOX = 20f;
@@ -20,6 +21,12 @@ public class CameraController : MonoBehaviour
     {
         StopAllCoroutines();
         StartCoroutine(ChangeFOVRoutine(speedAmount));
+
+        if (speedAmount > 0)
+        {
+            speedupParticalSystem.Play();
+        }
+     
     }
 
 

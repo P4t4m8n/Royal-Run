@@ -3,15 +3,23 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private CameraController cameraController;
     [SerializeField] private GameObject chunkPrefabs;
     [SerializeField] private Transform chunkParent;
+
+    [Header("Level Settings")]
     [SerializeField] private int startingChunksAmount = 12;
-    [SerializeField] private float chunkLength = 10f;
+    [Tooltip("Length of a single chunk along the Z axis")]
+    [SerializeField]
+    private float chunkLength = 10f;
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float minMoveSpeed = 2f;
+    [SerializeField] private float maxMoveSpeed = 20f;
+    [SerializeField] private float minGravityZ = -22f;
+    [SerializeField] private float maxGravityZ = -2f;
 
-    private List<GameObject> chunks = new();
+    private readonly List<GameObject> chunks = new();
 
     private void Start()
     {
@@ -25,10 +33,16 @@ public class LevelGenerator : MonoBehaviour
 
     public void ChangeChunkMoveSpeed(float speedAmount)
     {
-        moveSpeed += speedAmount;
-        if (moveSpeed < minMoveSpeed) moveSpeed = minMoveSpeed;
+        float newMoveSpeed = moveSpeed + speedAmount;
+        float clampedNewMoveSpeed = Mathf.Clamp(newMoveSpeed, minMoveSpeed, maxMoveSpeed);
 
-        Physics.gravity = new(Physics.gravity.x, Physics.gravity.y, Physics.gravity.z - speedAmount);
+        if (moveSpeed == clampedNewMoveSpeed) return;
+
+        moveSpeed = clampedNewMoveSpeed;
+
+        float newGravityZ = Physics.gravity.z + speedAmount;
+        float clampedNewGravityZ = Mathf.Clamp(newGravityZ, minGravityZ, maxGravityZ);
+        Physics.gravity = new(Physics.gravity.x, Physics.gravity.y, clampedNewGravityZ);
 
         cameraController.ChangeCameraFOV(speedAmount);
     }
